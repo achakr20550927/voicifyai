@@ -1,0 +1,221 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode for Tailwind v4 (dark: variants work with .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-headline: "Outfit", sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
+  --font-serif: "Source Serif 4", serif;
+
+  --color-background: hsl(210, 20%, 98%);
+  --color-surface: hsl(0, 0%, 100%);
+  --color-surface-variant: hsl(210, 20%, 94%);
+  --color-primary: hsl(215, 25%, 12%);
+  --color-primary-container: hsl(215, 20%, 90%);
+  --color-secondary: hsl(215, 15%, 40%);
+  --color-accent: hsl(230, 60%, 50%);
+  --color-outline: hsl(215, 10%, 85%);
+  --color-error: hsl(0, 70%, 50%);
+  
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2.5rem;
+  --radius: 1rem;
+}
+
+/* ── Dark Mode Token Overrides ────────────────────────── */
+:root.dark {
+  --color-background: hsl(220, 15%, 6%);
+  --color-surface: hsl(220, 15%, 10%);
+  --color-surface-variant: hsl(220, 15%, 14%);
+  --color-primary: hsl(210, 20%, 96%);
+  --color-primary-container: hsl(220, 15%, 18%);
+  --color-secondary: hsl(215, 15%, 60%);
+  --color-accent: hsl(220, 80%, 65%);
+  --color-outline: hsl(220, 15%, 22%);
+}
+
+@layer base {
+  body {
+    background-color: transparent;
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    transition: color 0.4s ease;
+  }
+}
+
+@layer components {
+  /* ── Light Glass (default) ───────────────────────────── */
+  .liquid-glass {
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 4px 24px -1px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.6);
+    position: relative; 
+    overflow: hidden;
+  }
+  
+  .liquid-glass-strong {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 8px 32px -4px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+    position: relative; 
+    overflow: hidden;
+  }
+
+  /* ── Dark Glass (active when .dark on <html>) ─────────── */
+  :root.dark .liquid-glass {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.07);
+    box-shadow: 0 4px 24px -1px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  :root.dark .liquid-glass-strong {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 8px 32px -4px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07);
+  }
+
+  .noise-bg {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0; /* disabled — video replaces noise texture */
+    pointer-events: none;
+  }
+
+  .cursor-glow {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    position: fixed;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+    mix-blend-mode: screen;
+  }
+}
+
+@keyframes entrance {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-entrance {
+  animation: entrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ═══════════════════════════════════════════════════════
+   DARK MODE — Global page overrides
+   Makes all light page backgrounds transparent so the
+   global video background in App.jsx shines through.
+   ═══════════════════════════════════════════════════════ */
+:root.dark main,
+:root.dark section.dark-page {
+  background-color: transparent !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   LIGHT MODE — Let the video show through
+   So "bg-white" / "bg-slate-50" panels don't hide the MP4.
+   ═══════════════════════════════════════════════════════ */
+:root:not(.dark) .bg-background {
+  background-color: transparent !important;
+}
+:root:not(.dark) .bg-white {
+  background: rgba(255,255,255,0.35) !important;
+  backdrop-filter: blur(12px);
+}
+:root:not(.dark) .bg-slate-50 {
+  background: rgba(255,255,255,0.25) !important;
+  backdrop-filter: blur(12px);
+}
+:root:not(.dark) .bg-slate-100 {
+  background: rgba(255,255,255,0.18) !important;
+  backdrop-filter: blur(10px);
+}
+:root:not(.dark) .bg-slate-50\/50 {
+  background: rgba(255,255,255,0.18) !important;
+}
+
+/* Page-level outer shells */
+:root.dark .bg-slate-50,
+:root.dark .bg-white {
+  background-color: transparent !important;
+}
+
+/* Cards / panels — become dark glass */
+:root.dark .bg-white.rounded-\[2rem\],
+:root.dark .bg-white.rounded-\[2\.5rem\],
+:root.dark .bg-white.rounded-2xl,
+:root.dark .bg-white.rounded-xl,
+:root.dark .bg-white.rounded-3xl {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Text — flip dark text to light */
+:root.dark .text-slate-900 { color: rgba(255,255,255,0.92) !important; }
+:root.dark .text-slate-800 { color: rgba(255,255,255,0.82) !important; }
+:root.dark .text-slate-700 { color: rgba(255,255,255,0.72) !important; }
+:root.dark .text-slate-600 { color: rgba(255,255,255,0.60) !important; }
+:root.dark .text-slate-500 { color: rgba(255,255,255,0.50) !important; }
+:root.dark .text-slate-400 { color: rgba(255,255,255,0.38) !important; }
+:root.dark .text-slate-300 { color: rgba(255,255,255,0.28) !important; }
+
+/* Border overrides */
+:root.dark .border-slate-200,
+:root.dark .border-slate-100 {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Slate background utility overrides */
+:root.dark .bg-slate-100 { background: rgba(255,255,255,0.04) !important; }
+:root.dark .bg-slate-50  { background: rgba(255,255,255,0.02) !important; }
+/* Tailwind opacity variants (e.g. bg-slate-50/50) */
+:root.dark .bg-slate-50\/50 { background: rgba(255,255,255,0.03) !important; }
+:root.dark .border-slate-200\/30 { border-color: rgba(255,255,255,0.08) !important; }
+:root.dark .border-slate-200\/40 { border-color: rgba(255,255,255,0.10) !important; }
+
+/* Shadows — lighten so they don't look wrong on dark */
+:root.dark .shadow-sm,
+:root.dark .shadow-md,
+:root.dark .shadow-lg,
+:root.dark .shadow-xl,
+:root.dark .shadow-2xl {
+  box-shadow: 0 2px 20px rgba(0,0,0,0.5) !important;
+}
+
+/* Input fields */
+:root.dark input,
+:root.dark textarea {
+  background: rgba(255,255,255,0.05) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  color: rgba(255,255,255,0.9) !important;
+}
+
+:root.dark input::placeholder,
+:root.dark textarea::placeholder {
+  color: rgba(255,255,255,0.25) !important;
+}
+
+/* Dark mode accent stays vibrant blue */
+:root.dark .text-accent { color: hsl(220, 80%, 70%) !important; }
+:root.dark .bg-accent   { background: hsl(220, 80%, 55%) !important; }
+:root.dark .border-accent { border-color: hsl(220, 80%, 55%) !important; }
+
+/* Tailwind opacity text variants — dark overrides */
+:root.dark .text-slate-800\/80 { color: rgba(255,255,255,0.78) !important; }
+:root.dark .text-slate-700\/70 { color: rgba(255,255,255,0.68) !important; }
+
+/* Dark-on-dark elements (slate-900 CTAs) stay as deep glass panels */
+:root.dark .bg-slate-900 {
+  background: rgba(255,255,255,0.08) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+}
