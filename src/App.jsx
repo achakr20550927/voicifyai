@@ -10,9 +10,8 @@ import CustomCursor from './components/CustomCursor';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { Sun, Moon } from 'lucide-react';
 
-// Light mode: local looping background video (served from `founder-os/public`)
-// Put the file at: `founder-os/public/Light mode background.mp4`
-const LIGHT_VIDEO = '/Light%20mode%20background.mp4';
+// Light mode: local looping background video served from `public/`.
+const LIGHT_VIDEO = '/light-mode-background.mp4';
 const LIGHT_VIDEO_FALLBACK = LIGHT_VIDEO;
 const DARK_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4';
 
